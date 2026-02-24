@@ -1,6 +1,7 @@
 # Desafio de Programação: Desafio: Sistema de Reservas de Restaurante
 
-O desafio foi retirado do site https://racoelho.com.br/listas/desafios/sistema-de-reservas-de-restaurante
+O desafio foi retirado do site https://racoelho.com.br/listas/desafios/sistema-de-reservas-de-restaurante.
+
 Neste desafio, você vai construir uma API para gerenciar reservas de mesas em um restaurante. 
 O objetivo é desenvolver funcionalidades comuns em sistemas reais de reserva, incluindo autenticação, validação e controle de disponibilidade. 
 Esse projeto será uma ótima adição ao seu portfólio de backend!
