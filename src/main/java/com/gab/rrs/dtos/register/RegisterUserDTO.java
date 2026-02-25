@@ -1,5 +1,7 @@
 package com.gab.rrs.dtos.register;
 
+import com.gab.rrs.entities.users.UserType;
+
 public record RegisterUserDTO(String name, String email,
-                              String password, String role) {
+                              String password, UserType role) {
 }

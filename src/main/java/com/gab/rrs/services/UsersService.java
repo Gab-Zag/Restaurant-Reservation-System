@@ -3,6 +3,7 @@ package com.gab.rrs.services;
 import com.gab.rrs.dtos.exceptions.InvalidEmailException;
 import com.gab.rrs.dtos.login.LoginUserDTO;
 import com.gab.rrs.dtos.register.RegisterUserDTO;
+import com.gab.rrs.entities.users.Users;
 import com.gab.rrs.repository.UsersRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,20 +20,29 @@ public class UsersService {
         this.usersRepository = usersRepository;
     }
 
-    public String register(@RequestBody RegisterUserDTO dto){
+    public void register(@RequestBody RegisterUserDTO dto){
         validatorEmail(dto.email());
-        return ("Registro realizado com sucesso");
+
+        Users users = new Users();
+
+        users.setEmail(dto.email());
+        users.setName(dto.name());
+        users.setPassword(dto.password());
+        users.setRole(dto.role());
+
+        usersRepository.save(users);
     }
 
     public String login (@RequestBody LoginUserDTO dto){
         return ("Login realizado com sucesso");
     }
 
-    public String validatorEmail(String email){
+    protected void validatorEmail(String email){
 
-        if (email == null || !EMAIL_PATTERN.matcher(email).matches()){
+        if (email == null || !EMAIL_PATTERN.matcher(email).matches()) {
             throw new InvalidEmailException("Email Invalidado");
+        } else if (usersRepository.findByEmail(email).isPresent()) {
+            throw new InvalidEmailException("Email ja cadastrado");
         }
-        return email;
     }
 }
