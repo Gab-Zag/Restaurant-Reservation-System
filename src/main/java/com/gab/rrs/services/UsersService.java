@@ -1,5 +1,6 @@
 package com.gab.rrs.services;
 
+import com.gab.rrs.dtos.exceptions.InvalidEmailException;
 import com.gab.rrs.dtos.login.LoginUserDTO;
 import com.gab.rrs.dtos.register.RegisterUserDTO;
 import com.gab.rrs.repository.UsersRepository;
@@ -19,6 +20,7 @@ public class UsersService {
     }
 
     public String register(@RequestBody RegisterUserDTO dto){
+        validatorEmail(dto.email());
         return ("Registro realizado com sucesso");
     }
 
@@ -29,7 +31,7 @@ public class UsersService {
     public String validatorEmail(String email){
 
         if (email == null || !EMAIL_PATTERN.matcher(email).matches()){
-
+            throw new InvalidEmailException("Email Invalidado");
         }
         return email;
     }
