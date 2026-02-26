@@ -50,13 +50,14 @@ public class ReservationService {
 
     public String cancel(Integer id){
         Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new InvalidIdException("Nao possui reserva em nosso sistema"));
-
+        Tables table = reservation.getTables();
         if (reservation.getStatus() == ReservationType.canceled){
             throw new InvalidReservationCancelException("Reserva ja esta cancelada em nosso sistema");
         }
         reservation.setStatus(ReservationType.canceled);
-
+        table.setStatus(TablesType.available);
         reservationRepository.save(reservation);
+        tablesRepository.save(table);
 
         return "Reserva da mesa foi cancelada com sucesso";
     }

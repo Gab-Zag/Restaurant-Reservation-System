@@ -1,5 +1,6 @@
 package com.gab.rrs.services;
 
+import com.gab.rrs.dtos.delete.DeleteTableDTO;
 import com.gab.rrs.dtos.update.UpdateTablesDTO;
 import com.gab.rrs.entities.tables.TablesType;
 import com.gab.rrs.exceptions.InvalidIdException;
@@ -26,8 +27,8 @@ public class TablesService {
         return tablesRepository.findAll();
     }
 
-    public String registerTable(Integer id, RegisterTablesDTO dto){
-        usersService.checkUser(id);
+    public String registerTable(RegisterTablesDTO dto){
+        usersService.checkUser(dto.id());
         Tables table = new Tables();
 
         table.setCapacity(dto.capacity());
@@ -53,11 +54,11 @@ public class TablesService {
         return "Mesa atualizada com sucesso.";
     }
 
-    public String deleteTable(Integer tableId, Integer admId){
+    public String deleteTable(Integer tableId, DeleteTableDTO dto){
         if(!tablesRepository.findById(tableId).isPresent()){
             throw new InvalidIdException("Mesa nao registrada em nosso sistema.");
         }else{
-            usersService.checkUserAdm(admId);
+            usersService.checkUserAdm(dto.id());
             tablesRepository.deleteById(tableId);
             return "Mesa deletada com sucesso.";
         }

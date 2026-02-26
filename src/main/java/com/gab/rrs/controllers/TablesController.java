@@ -1,5 +1,6 @@
 package com.gab.rrs.controllers;
 
+import com.gab.rrs.dtos.delete.DeleteTableDTO;
 import com.gab.rrs.dtos.register.RegisterTablesDTO;
 import com.gab.rrs.dtos.update.UpdateTablesDTO;
 import com.gab.rrs.services.TablesService;
@@ -19,9 +20,9 @@ public class TablesController {
         return ResponseEntity.ok(this.tablesService.allTables(null));
     }
 
-    @PostMapping("/mesas/{id}")
-    public ResponseEntity<String> addTable(@PathVariable Integer id, @RequestBody RegisterTablesDTO dto){
-        String confirmed = tablesService.registerTable(id,dto);
+    @PostMapping("/mesas")
+    public ResponseEntity<String> addTable(@RequestBody RegisterTablesDTO dto){
+        String confirmed = tablesService.registerTable(dto);
         return ResponseEntity.ok(confirmed);
     }
 
@@ -31,9 +32,9 @@ public class TablesController {
         return ResponseEntity.ok(confirmed);
     }
 
-    @DeleteMapping("/mesas/{tableId}/{admId}")
-    public ResponseEntity<String> deleteTable(@PathVariable Integer tableId, @PathVariable Integer admId){
-        String confirmed = tablesService.deleteTable(tableId, admId);
+    @DeleteMapping("/mesas/{tableId}")
+    public ResponseEntity<String> deleteTable(@PathVariable Integer tableId, @RequestBody DeleteTableDTO dto){
+        String confirmed = tablesService.deleteTable(tableId, dto);
         return ResponseEntity.ok(confirmed);
     }
 }
