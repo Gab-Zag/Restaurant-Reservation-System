@@ -7,7 +7,6 @@ import com.gab.rrs.dtos.register.RegisterUserDTO;
 import com.gab.rrs.entities.users.Users;
 import com.gab.rrs.exceptions.InvalidIdException;
 import com.gab.rrs.repository.UsersRepository;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 

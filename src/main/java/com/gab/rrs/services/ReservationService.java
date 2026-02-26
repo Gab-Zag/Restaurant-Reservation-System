@@ -3,41 +3,43 @@ package com.gab.rrs.services;
 import com.gab.rrs.dtos.reservation.ReservationTableDTO;
 import com.gab.rrs.entities.reservation.Reservation;
 import com.gab.rrs.entities.reservation.ReservationType;
+import com.gab.rrs.entities.tables.Tables;
+import com.gab.rrs.entities.tables.TablesType;
 import com.gab.rrs.exceptions.InvalidIdException;
 import com.gab.rrs.exceptions.InvalidReservationCancelException;
 import com.gab.rrs.repository.ReservationRepository;
+import com.gab.rrs.repository.TablesRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.Validator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ReservationService {
 
-    private final Validator validator;
     private ReservationRepository reservationRepository;
     private TablesService tablesService;
+    private TablesRepository tablesRepository;
     private UsersService usersService;
 
-    public ReservationService(ReservationRepository reservationRepository, UsersService usersService, TablesService tablesService, Validator validator){
+    public ReservationService(ReservationRepository reservationRepository, UsersService usersService, TablesService tablesService, TablesRepository tablesRepository){
         this.reservationRepository = reservationRepository;
         this.usersService = usersService;
         this.tablesService = tablesService;
-        this.validator = validator;
+        this.tablesRepository = tablesRepository;
     }
 
     public String reservationTable(ReservationTableDTO dto) {
 
-        checkTableIsReserverd(dto.tables_id());
+        Tables table = tablesRepository.findById(dto.tables_id()).orElseThrow(() -> new InvalidIdException("Mesa nao encontrada"));
+        Reservation reservation = new Reservation();
 
-        //Reservation reservation = new Reservation();
+        reservation.setStatus(ReservationType.active);
+        reservation.setTables(tablesService.checkTable(dto.tables_id()));
+        reservation.setUsers(usersService.checkUser(dto.user_id()));
+        table.setStatus(TablesType.reserved);
 
-        //reservation.setStatus(ReservationType.active);
-        //reservation.setTables(tablesService.checkTable(dto.tables_id()));
-        //reservation.setUsers(usersService.checkUser(dto.user_id()));
-
-        //reservationRepository.save(reservation);
+        reservationRepository.save(reservation);
+        tablesRepository.save(table);
 
         return "Mesa Reservado com sucesso";
     }
@@ -57,17 +59,5 @@ public class ReservationService {
         reservationRepository.save(reservation);
 
         return "Reserva da mesa foi cancelada com sucesso";
-    }
-
-    public void checkTableIsReserverd(Integer id){
-
-        ArrayList table = reservationRepository.findByTables_Id(id);
-
-        Reservation reservation;
-
-        for(int i = 0; i < table.size(); i++){
-            if(reservation.getStatus(table.get(i)) != ReservationType.canceled){
-            }
-        }
     }
 }

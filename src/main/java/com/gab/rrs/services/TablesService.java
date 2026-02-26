@@ -7,7 +7,6 @@ import com.gab.rrs.dtos.register.RegisterTablesDTO;
 import com.gab.rrs.entities.tables.Tables;
 import com.gab.rrs.exceptions.InvalidTableException;
 import com.gab.rrs.repository.TablesRepository;
-import com.gab.rrs.repository.UsersRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
