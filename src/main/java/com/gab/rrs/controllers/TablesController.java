@@ -1,5 +1,7 @@
 package com.gab.rrs.controllers;
 
+import com.gab.rrs.dtos.register.RegisterTablesDTO;
+import com.gab.rrs.dtos.update.UpdateTablesDTO;
 import com.gab.rrs.services.TablesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,25 +10,30 @@ import org.springframework.web.bind.annotation.*;
 public class TablesController {
     private TablesService tablesService;
 
+    public TablesController(TablesService tablesService){
+        this.tablesService = tablesService;
+    }
 
     @GetMapping("/mesas")
-    public ResponseEntity<Void> allTable(){
-        return ResponseEntity.ok().build();
+    public ResponseEntity allTable(){
+        return ResponseEntity.ok(this.tablesService.allTables(null));
     }
 
-    @PostMapping("/mesas")
-    public ResponseEntity<Void> addTable(){
-        return ResponseEntity.ok().build();
+    @PostMapping("/mesas/{id}")
+    public ResponseEntity<String> addTable(@PathVariable Integer id, @RequestBody RegisterTablesDTO dto){
+        String confirmed = tablesService.registerTable(id,dto);
+        return ResponseEntity.ok(confirmed);
     }
 
-    @PutMapping("/mesa/{id}")
-    public ResponseEntity<Void> updateTable(@PathVariable Integer id){
-        return ResponseEntity.ok().build();
+    @PatchMapping("/mesa/{id}")
+    public ResponseEntity<String> updateTable(@PathVariable Integer id, @RequestBody UpdateTablesDTO dto){
+        String confirmed = tablesService.updateTable(id,dto);
+        return ResponseEntity.ok(confirmed);
     }
 
-
-    @DeleteMapping("/mesas/{id}")
-    public ResponseEntity<Void> deleteTable(@PathVariable Integer id){
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/mesas/{tableId}/{admId}")
+    public ResponseEntity<String> deleteTable(@PathVariable Integer tableId, @PathVariable Integer admId){
+        String confirmed = tablesService.deleteTable(tableId, admId);
+        return ResponseEntity.ok(confirmed);
     }
 }

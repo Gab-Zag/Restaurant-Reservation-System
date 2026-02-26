@@ -1,4 +1,4 @@
-package com.gab.rrs.dtos.exceptions;
+package com.gab.rrs.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

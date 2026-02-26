@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reservation")
@@ -30,7 +31,8 @@ public class Reservation {
     @JoinColumn(name = "table_id")
     private Tables tables;
 
-    private LocalDate reservation_data;
+    @Column(name = "reservation_data")
+    private LocalDateTime reservation_data;
 
     @Enumerated(EnumType.STRING)
     private ReservationType status;

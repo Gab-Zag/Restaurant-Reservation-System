@@ -1,4 +1,4 @@
-package com.gab.rrs.dtos.exceptions;
+package com.gab.rrs.exceptions;
 
 public class InvalidEmailException extends RuntimeException {
     public InvalidEmailException(String message) {
