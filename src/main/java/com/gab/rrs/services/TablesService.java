@@ -56,7 +56,7 @@ public class TablesService {
         }
     }
 
-    protected Tables checkTable(Integer id){
+    public Tables checkTable(Integer id){
         Tables table = tablesRepository.findById(id).orElseThrow(() -> new InvalidIdException("Mesa nao existente em nosso sistema"));
 
         if(table.getStatus() != TablesType.available){

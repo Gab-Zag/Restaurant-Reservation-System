@@ -53,7 +53,7 @@ public class UsersService {
         return new LoginResponseDTO(token);
     }
 
-    protected Users checkUser(Integer id){
+    public Users checkUser(Integer id){
         return usersRepository.findById(id).orElseThrow(() -> new InvalidIdException("Usuário não encontrado."));
     }
 
