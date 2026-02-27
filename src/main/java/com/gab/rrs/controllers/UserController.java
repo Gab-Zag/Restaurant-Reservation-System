@@ -3,29 +3,30 @@ package com.gab.rrs.controllers;
 import com.gab.rrs.dtos.login.LoginUserDTO;
 import com.gab.rrs.dtos.register.RegisterUserDTO;
 import com.gab.rrs.services.UsersService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/usuarios")
 public class UserController {
 
-    private UsersService usersService;
+    private final UsersService usersService;
 
     public UserController(UsersService usersService){
         this.usersService = usersService;
     }
 
-    @PostMapping("/usuarios/registrar")
-    public ResponseEntity<String> register(@RequestBody RegisterUserDTO dto){
-        String confirmed = usersService.register(dto);
-        return ResponseEntity.ok(confirmed);
+    @PostMapping("/registrar")
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterUserDTO dto){
+        return ResponseEntity.ok(usersService.register(dto));
     }
 
-    @PostMapping("/usuarios/login")
-    public ResponseEntity<Void> login(@RequestBody LoginUserDTO dto){
-        usersService.login(dto);
-        return ResponseEntity.ok().build();
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody @Valid LoginUserDTO dto){
+        return ResponseEntity.ok(usersService.login(dto));
     }
 }

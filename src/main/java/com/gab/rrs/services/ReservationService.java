@@ -11,6 +11,7 @@ import com.gab.rrs.repository.ReservationRepository;
 import com.gab.rrs.repository.TablesRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -31,11 +32,8 @@ public class ReservationService {
     public String reservationTable(ReservationTableDTO dto) {
 
         Tables table = tablesRepository.findById(dto.tables_id()).orElseThrow(() -> new InvalidIdException("Mesa nao encontrada"));
-        Reservation reservation = new Reservation();
+        Reservation reservation = new Reservation(usersService.checkUser(dto.user_id()),tablesService.checkTable(dto.tables_id()), LocalDateTime.now(),ReservationType.active);
 
-        reservation.setStatus(ReservationType.active);
-        reservation.setTables(tablesService.checkTable(dto.tables_id()));
-        reservation.setUsers(usersService.checkUser(dto.user_id()));
         table.setStatus(TablesType.reserved);
 
         reservationRepository.save(reservation);

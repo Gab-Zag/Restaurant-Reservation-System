@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,4 +35,12 @@ public class Reservation {
 
     @Enumerated(EnumType.STRING)
     private ReservationType status;
+
+    public Reservation(Users users, Tables tables, LocalDateTime reservation_data, ReservationType status){
+        this.users = users;
+        this.tables = tables;
+        this.reservation_data = reservation_data;
+        this.status = status;
+    }
+
 }

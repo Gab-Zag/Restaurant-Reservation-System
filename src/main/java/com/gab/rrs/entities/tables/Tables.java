@@ -24,4 +24,10 @@ public class Tables {
 
     @Enumerated(EnumType.STRING)
     private TablesType status;
+
+    public Tables(String name, Integer capacity, TablesType status){
+        this.name = name;
+        this.capacity = capacity;
+        this.status = status;
+    }
 }

@@ -8,33 +8,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/mesas")
 public class TablesController {
+
     private TablesService tablesService;
 
     public TablesController(TablesService tablesService){
         this.tablesService = tablesService;
     }
 
-    @GetMapping("/mesas")
+    @GetMapping()
     public ResponseEntity allTable(){
-        return ResponseEntity.ok(this.tablesService.allTables(null));
+        return ResponseEntity.ok(tablesService.allTables());
     }
 
-    @PostMapping("/mesas")
+    @PostMapping()
     public ResponseEntity<String> addTable(@RequestBody RegisterTablesDTO dto){
-        String confirmed = tablesService.registerTable(dto);
-        return ResponseEntity.ok(confirmed);
+        return ResponseEntity.ok(tablesService.registerTable(dto));
     }
 
-    @PatchMapping("/mesa/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<String> updateTable(@PathVariable Integer id, @RequestBody UpdateTablesDTO dto){
-        String confirmed = tablesService.updateTable(id,dto);
-        return ResponseEntity.ok(confirmed);
+        return ResponseEntity.ok(tablesService.updateTable(id,dto));
     }
 
-    @DeleteMapping("/mesas/{tableId}")
-    public ResponseEntity<String> deleteTable(@PathVariable Integer tableId, @RequestBody DeleteTableDTO dto){
-        String confirmed = tablesService.deleteTable(tableId, dto);
-        return ResponseEntity.ok(confirmed);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteTable(@PathVariable Integer id){
+        return ResponseEntity.ok(tablesService.deleteTable(id));
     }
 }

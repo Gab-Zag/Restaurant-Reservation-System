@@ -16,24 +16,17 @@ import java.util.List;
 public class TablesService {
 
     private TablesRepository tablesRepository;
-    private UsersService usersService;
 
-    public TablesService(TablesRepository tablesRepository, UsersService usersService){
+    public TablesService(TablesRepository tablesRepository){
         this.tablesRepository = tablesRepository;
-        this.usersService = usersService;
     }
 
-    public List<Tables> allTables(Tables tables){
+    public List<Tables> allTables(){
         return tablesRepository.findAll();
     }
 
     public String registerTable(RegisterTablesDTO dto){
-        usersService.checkUser(dto.id());
-        Tables table = new Tables();
-
-        table.setCapacity(dto.capacity());
-        table.setName(dto.name());
-        table.setStatus(TablesType.available);
+        Tables table = new Tables(dto.name(),dto.capacity(),TablesType.available);
 
         tablesRepository.save(table);
 
@@ -54,11 +47,10 @@ public class TablesService {
         return "Mesa atualizada com sucesso.";
     }
 
-    public String deleteTable(Integer tableId, DeleteTableDTO dto){
+    public String deleteTable(Integer tableId){
         if(!tablesRepository.findById(tableId).isPresent()){
             throw new InvalidIdException("Mesa nao registrada em nosso sistema.");
         }else{
-            usersService.checkUserAdm(dto.id());
             tablesRepository.deleteById(tableId);
             return "Mesa deletada com sucesso.";
         }
@@ -67,7 +59,7 @@ public class TablesService {
     protected Tables checkTable(Integer id){
         Tables table = tablesRepository.findById(id).orElseThrow(() -> new InvalidIdException("Mesa nao existente em nosso sistema"));
 
-        if(table.getStatus() == TablesType.inactive || table.getStatus() == TablesType.reserved){
+        if(table.getStatus() != TablesType.available){
             throw new InvalidTableException("Mesa indisponivel");
         }
 

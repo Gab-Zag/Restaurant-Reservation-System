@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/reservas")
 public class ReservationController {
     private ReservationService reservationService;
 
@@ -13,20 +14,18 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @PostMapping("/reservas")
+    @PostMapping()
     public ResponseEntity<String> reserva(@RequestBody ReservationTableDTO dto){
-        String confirmed = reservationService.reservationTable(dto);
-        return ResponseEntity.ok(confirmed);
+        return ResponseEntity.ok(reservationService.reservationTable(dto));
     }
 
-    @GetMapping("/reservas")
+    @GetMapping()
     public ResponseEntity getReserva(){
         return ResponseEntity.ok(reservationService.getAll());
     }
 
-    @PatchMapping("/reservas/{id}/cancelar")
+    @PatchMapping("/{id}/cancelar")
     public ResponseEntity<String> cancelReserva(@PathVariable Integer id){
-        String confirmed = reservationService.cancel(id);
-        return ResponseEntity.ok(confirmed);
+        return ResponseEntity.ok(reservationService.cancel(id));
     }
 }
